@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Форум{% endblock %}
+
+{% block content %}
+<h2>Форум</h2>
+
+<form method="post">
+    <textarea name="content" placeholder="Напишите сообщение..." rows="5" required></textarea>
+    <input type="submit" value="Опубликовать">
+</form>
+
+<div class="messages">
+    {% for msg in messages %}
+    <div class="message">
+        <strong>{{ msg.username }}</strong> 
+        <small>{{ msg.timestamp }}</small>
+        <div class="message-content">
+            {{ msg.content | safe }}  <!-- Stored XSS здесь -->
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

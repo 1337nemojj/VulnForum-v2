@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Админ-панель{% endblock %}
+
+{% block content %}
+<h2>Админ-панель</h2>
+<p><strong>Добро пожаловать в секретную зону!</strong></p>
+
+<h3>Все пользователи системы</h3>
+{% for user in users %}
+<div class="user-card">
+    ID: {{ user.id }} | 
+    <strong>{{ user.username }}</strong> | 
+    Пароль: <code>{{ user.password }}</code> | 
+    Роль: {{ user.role }}
+    
+    <form action="{{ url_for('update_profile', user_id=user.id) }}" method="post" style="display:inline;">
+        <input type="hidden" name="role" value="admin">
+        <button type="submit">→ admin</button>
+    </form>
+</div>
+{% endfor %}
+{% endblock %}

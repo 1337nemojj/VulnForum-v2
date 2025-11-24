@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Профиль: {{ user.username }}{% endblock %}
+
+{% block content %}
+<div class="profile">
+    <h2>Профиль пользователя</h2>
+    <p><strong>Логин:</strong> {{ user.username }}</p>
+    <p><strong>Роль:</strong> <span class="role-badge {{ user.role }}">{{ user.role|capitalize }}</span></p>
+    <p><strong>Зарегистрирован:</strong> {{ user.registered_at }}</p>
+    <p><em>Этот профиль может видеть любой зарегистрированный пользователь.</em></p>
+</div>
+{% endblock %}

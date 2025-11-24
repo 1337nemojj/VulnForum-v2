@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}VULNFORUM{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>VULNFORUM</h1>
+            <p>Тестовый форум • OWASP Top 10</p>
+        </header>
+
+        {% if session.username %}
+        <nav>
+            <a href="{{ url_for('forum') }}">Форум</a> |
+            <a href="{{ url_for('search') }}">Поиск пользователей</a> |
+            <a href="{{ url_for('ssrf_page') }}">Тестер подключений</a> |
+            <a href="{{ url_for('ping_host') }}">Пинг хоста</a> |
+            Привет, <strong>{{ session.username }}</strong> |
+            <a href="{{ url_for('logout') }}">Выйти</a>
+        </nav>
+        {% endif %}
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="alert">
+              {% for msg in messages %}{{ msg }}<br>{% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+
+        <footer>
+            VULNFORUM © 2025 | Учебный проект по информационной безопасности
+        </footer>
+    </div>
+</body>
+</html>

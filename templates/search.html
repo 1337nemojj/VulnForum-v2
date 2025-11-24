@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Поиск пользователей{% endblock %}
+
+{% block content %}
+<h2>Поиск пользователей</h2>
+
+<form method="get" style="margin-bottom:20px;">
+    <input type="text" name="q" placeholder="Введите логин..." value="{{ query or '' }}" autofocus>
+    <input type="submit" value="Найти">
+</form>
+
+{% if users %}
+<table class="search-table">
+    <thead>
+        <tr>
+            <th>Логин</th>
+            <th>Роль</th>
+            <th>Дата регистрации</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td><strong>{{ user.username }}</strong></td>
+            <td><span class="role-badge {{ user.role }}">{{ user.role|capitalize }}</span></td>
+            <td>{{ user.registered_at }}</td>
+            <td>
+                <a href="{{ url_for('profile', username=user.username) }}" class="btn-small">Профиль</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<small>Найдено: {{ users|length }}</small>
+
+{% elif query %}
+<p>Ничего не найдено.</p>
+{% endif %}
+{% endblock %}
