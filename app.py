@@ -133,7 +133,6 @@ def search():
         conn = get_db()
         c = conn.cursor()
         
-        # ← ВОТ ОНА — НАСТОЯЩАЯ, СКРЫТАЯ SQL INJECTION!
         sql = f"SELECT username, role, created_at FROM users WHERE username LIKE '%{query}%'"
         try:
             c.execute(sql)
@@ -145,7 +144,7 @@ def search():
                     'registered_at': row[2] or '—'
                 })
         except Exception as e:
-            # При ошибке — просто пусто (не падаем)
+            # (не падаем)
             pass
         conn.close()
 
@@ -207,7 +206,6 @@ def update_profile(user_id):
     conn.close()
     return "Updated!"
 
-# On startup: ensure the database and required tables exist. This makes local setup easier
 try:
     import database
 except Exception:
@@ -218,7 +216,6 @@ if database and not os.path.exists(DB_PATH):
     # Create the full DB (users + messages)
     database.create_db()
 else:
-    # If DB exists, ensure messages table exists (older DBs may lack it)
     try:
         conn = sqlite3.connect(DB_PATH)
         c = conn.cursor()
@@ -238,7 +235,6 @@ else:
         finally:
             conn.close()
     except Exception:
-        # If anything goes wrong here, we don't want to crash the server startup.
         pass
 
 if __name__ == '__main__':
