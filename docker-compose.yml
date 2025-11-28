@@ -1,17 +1,9 @@
 services:
   vulnforum:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: vulnforum
+    build: .
     ports:
       - "80:80"
     volumes:
-      - .:/app                  
+      - .:/app
+    command: python app.py --host=0.0.0.0 --port=80
     restart: unless-stopped
-    environment:
-      - FLASK_ENV=development
-      - FLASK_RUN_PORT=80
-
-volumes:
-  db_data:
