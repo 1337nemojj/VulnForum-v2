@@ -9,10 +9,10 @@ WORKDIR /app
 COPY . /app
 
 # Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt || cat /app/requirements.txt
 
 # Expose the application port
-EXPOSE 5000
+EXPOSE 80
 
 # Command to run the application
 CMD ["python", "app.py"]
