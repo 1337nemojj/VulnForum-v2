@@ -30,9 +30,28 @@ def create_db():
     
     c.executemany("INSERT INTO users (username, password, role) VALUES (?, ?, ?)", users)
     
+    # Create messages table
+    c.execute('''
+        CREATE TABLE messages (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            content TEXT NOT NULL,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY(user_id) REFERENCES users(id)
+        )
+    ''')
+    
+    # Optional: sample messages
+    sample_msgs = [
+        (1, 'Welcome to the vulnerable forum!'),
+        (2, 'Hello from user1'),
+        (3, 'This is a test message')
+    ]
+    c.executemany("INSERT INTO messages (user_id, content) VALUES (?, ?)", sample_msgs)
+    
     conn.commit()
     conn.close()
-    print("База vulnfirm.db успешно создана с колонкой created_at!")
+    print("База vulnfirm.db успешно создана с таблицами users и messages!")
 
 if __name__ == "__main__":
     create_db()

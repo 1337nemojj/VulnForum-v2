@@ -207,5 +207,39 @@ def update_profile(user_id):
     conn.close()
     return "Updated!"
 
+# On startup: ensure the database and required tables exist. This makes local setup easier
+try:
+    import database
+except Exception:
+    database = None
+
+DB_PATH = 'vulnfirm.db'
+if database and not os.path.exists(DB_PATH):
+    # Create the full DB (users + messages)
+    database.create_db()
+else:
+    # If DB exists, ensure messages table exists (older DBs may lack it)
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+        try:
+            c.execute("SELECT 1 FROM messages LIMIT 1")
+        except sqlite3.OperationalError:
+            c.execute('''
+                CREATE TABLE messages (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    user_id INTEGER NOT NULL,
+                    content TEXT NOT NULL,
+                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY(user_id) REFERENCES users(id)
+                )
+            ''')
+            conn.commit()
+        finally:
+            conn.close()
+    except Exception:
+        # If anything goes wrong here, we don't want to crash the server startup.
+        pass
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, ssl_context=None)  # A02: No HTTPS
