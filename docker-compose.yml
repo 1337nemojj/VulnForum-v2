@@ -1,8 +1,8 @@
-version: '3.9'
-
 services:
   vulnforum:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: vulnforum
     ports:
       - "5000:5000"
