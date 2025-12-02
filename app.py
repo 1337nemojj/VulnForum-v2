@@ -87,7 +87,17 @@ def logout():
     session.clear()
     return redirect(url_for('login'))
 
+def delete_message(message_id):
+    conn = get_db()
+    c = conn.cursor()
+    c.execute("DELETE FROM messages WHERE id = ?", (message_id,))
+    conn.commit()
+    conn.close()
 
+@app.route('/delete_message/<int:message_id>', methods=['POST']) # curl -X POST http://127.0.0.1:80/delete_message/1
+def delete_message_route(message_id):
+    delete_message(message_id)
+    return f"Сообщение с ID {message_id} удалено."
 
 @app.route('/forum', methods=['GET', 'POST'])
 def forum():
