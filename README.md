@@ -1,5 +1,10 @@
 # VulnForum-v2
 
+## Safety Notice
+
+This repository contains an intentionally vulnerable web application for local security training and lab work.
+Run it only in an isolated local environment that you control. Do not expose it to the public internet or use it against third-party systems.
+
 ## Установка и запуск
 
 ### Локальный запуск
